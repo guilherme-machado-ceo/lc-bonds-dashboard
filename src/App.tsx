@@ -17,6 +17,7 @@ import EmbedOverlay from "@/components/EmbedOverlay";
 import LiveDataPanel from "@/components/LiveDataPanel";
 import NewsPanel from "@/components/NewsPanel";
 import ClimatePanel from "@/components/ClimatePanel";
+import { I18nProvider } from "@/i18n/I18nContext";
 
 function useScrollReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -54,44 +55,46 @@ export default function App() {
   const handleCloseEmbed = useCallback(() => setActiveEmbed(null), []);
 
   return (
-    <div className="min-h-screen bg-[#050505] text-[#e0e0e0] font-sans overflow-x-auto">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #050505; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #222; }
-        ::-webkit-scrollbar-thumb:hover { background: #333; }
-        ::selection { background-color: rgba(0, 255, 255, 0.2); color: #e0e0e0; }
-      `}</style>
+    <I18nProvider>
+      <div className="min-h-screen bg-[#050505] text-[#e0e0e0] font-sans overflow-x-auto">
+        <style>{`
+          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+          body { font-family: 'Inter', sans-serif; background-color: #050505; }
+          .font-mono { font-family: 'JetBrains Mono', monospace; }
+          ::-webkit-scrollbar { width: 6px; height: 6px; }
+          ::-webkit-scrollbar-track { background: #0a0a0a; }
+          ::-webkit-scrollbar-thumb { background: #222; }
+          ::-webkit-scrollbar-thumb:hover { background: #333; }
+          ::selection { background-color: rgba(0, 255, 255, 0.2); color: #e0e0e0; }
+        `}</style>
 
-      <Navbar />
-      <RevealSection><ContextBanner /></RevealSection>
-      <RevealSection><HeroSection regionFilter={regionFilter} onRegionChange={setRegionFilter} /></RevealSection>
+        <Navbar />
+        <RevealSection><ContextBanner /></RevealSection>
+        <RevealSection><HeroSection regionFilter={regionFilter} onRegionChange={setRegionFilter} /></RevealSection>
 
-      {/* ── LIVE DATA: Commodities + FX ao vivo ── */}
-      <RevealSection><LiveDataPanel /></RevealSection>
+        {/* ── LIVE DATA: Commodities + FX ao vivo ── */}
+        <RevealSection><LiveDataPanel /></RevealSection>
 
-      <RevealSection><BrazilSpotlight onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} /></RevealSection>
-      <RevealSection><MarketSizeChart onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} /></RevealSection>
-      <RevealSection><SpreadsTable onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} regionFilter={regionFilter} /></RevealSection>
-      <RevealSection><VolatilityChart onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} regionFilter={regionFilter} /></RevealSection>
-      <RevealSection><TCXChart onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} /></RevealSection>
-      <RevealSection><DebtComposition onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} regionFilter={regionFilter} /></RevealSection>
-      <RevealSection><StabilityScatter onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} regionFilter={regionFilter} /></RevealSection>
-      <RevealSection><GoldReservesChart onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} /></RevealSection>
-      <RevealSection><OilVectorChart onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} /></RevealSection>
+        <RevealSection><BrazilSpotlight onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} /></RevealSection>
+        <RevealSection><MarketSizeChart onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} /></RevealSection>
+        <RevealSection><SpreadsTable onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} regionFilter={regionFilter} /></RevealSection>
+        <RevealSection><VolatilityChart onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} regionFilter={regionFilter} /></RevealSection>
+        <RevealSection><TCXChart onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} /></RevealSection>
+        <RevealSection><DebtComposition onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} regionFilter={regionFilter} /></RevealSection>
+        <RevealSection><StabilityScatter onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} regionFilter={regionFilter} /></RevealSection>
+        <RevealSection><GoldReservesChart onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} /></RevealSection>
+        <RevealSection><OilVectorChart onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} /></RevealSection>
 
-      {/* ── NEWS: Noticias financeiras curadas ── */}
-      <RevealSection><NewsPanel /></RevealSection>
+        {/* ── NEWS: Noticias financeiras curadas ── */}
+        <RevealSection><NewsPanel /></RevealSection>
 
-      {/* ── CLIMATE: Risco climatico BRICS/LATAM ── */}
-      <RevealSection><ClimatePanel /></RevealSection>
+        {/* ── CLIMATE: Risco climatico BRICS/LATAM ── */}
+        <RevealSection><ClimatePanel /></RevealSection>
 
-      <Footer onSourceClick={handleSourceClick} />
-      <SourceOverlay sourceId={activeSource} onClose={handleCloseSource} />
-      <EmbedOverlay sectionId={activeEmbed} onClose={handleCloseEmbed} />
-    </div>
+        <Footer onSourceClick={handleSourceClick} />
+        <SourceOverlay sourceId={activeSource} onClose={handleCloseSource} />
+        <EmbedOverlay sectionId={activeEmbed} onClose={handleCloseEmbed} />
+      </div>
+    </I18nProvider>
   );
 }
