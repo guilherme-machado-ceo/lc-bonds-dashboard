@@ -3,7 +3,7 @@ import { inflectionPoints, countryDebtData, kpis, latestYearIndex } from "@/data
 import { useI18n } from "@/i18n/I18nContext";
 import ExportButton from "./ExportButton";
 import EstBadge from "./EstBadge";
-import { ArrowRight, ChevronRight, Share2 } from "lucide-react";
+import { ChevronRight, Share2 } from "lucide-react";
 
 interface Props { onSourceClick: (id: string) => void; onEmbedClick: (id: string) => void; }
 
@@ -137,9 +137,8 @@ export default function BrazilSpotlight({ onSourceClick, onEmbedClick }: Props) 
             </div>
           </div>
         </div>
-        <div className="mt-4 flex items-center justify-between">
+        <div className="mt-4">
           <button onClick={() => onSourceClick("bcb")} className="text-[9px] font-mono text-[#444] hover:text-[#00FFFF] transition-colors">{t("section1.source")}: BCB / PBOC / NDB / CIPS →</button>
-          <a href="https://www.bcb.gov.br/estabilidadefinanceira/trocaisonomada" target="_blank" rel="noopener noreferrer" className="text-[10px] font-mono text-[#00FFFF] hover:underline flex items-center gap-1">{t("section1.readAnalysis")} <ArrowRight size={10} /></a>
         </div>
       </div>
     </section>
