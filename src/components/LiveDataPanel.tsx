@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { BarChart3, TrendingUp, TrendingDown } from "lucide-react";
+import { useI18n } from "@/i18n/I18nContext";
 
 interface MarketItem {
   symbol: string;
@@ -15,6 +16,7 @@ interface MarketItem {
 }
 
 export default function LiveDataPanel() {
+  const { t, locale } = useI18n();
   const [items, setItems] = useState<MarketItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -23,7 +25,7 @@ export default function LiveDataPanel() {
     fetch("https://hubstry-em-dashboard.vercel.app/api/live-data")
       .then((r) => r.json())
       .then((data) => { setItems(data.items || []); setLoading(false); })
-      .catch(() => { setError("Falha ao carregar cotacoes"); setLoading(false); });
+      .catch(() => { setError(t("liveData.error")); setLoading(false); });
   }, []);
 
   if (loading) return (
@@ -31,8 +33,8 @@ export default function LiveDataPanel() {
       <div className="max-w-[1440px] mx-auto px-4 py-8">
         <div className="flex items-center gap-2 mb-4">
           <BarChart3 size={14} className="text-[#00FFFF]" />
-          <h2 className="text-sm font-bold tracking-tight text-[#e0e0e0]">COTACOES AO VIVO</h2>
-          <span className="text-[8px] font-mono text-[#444] ml-auto">Carregando...</span>
+          <h2 className="text-sm font-bold tracking-tight text-[#e0e0e0]">{t("liveData.title")}</h2>
+          <span className="text-[8px] font-mono text-[#444] ml-auto">{t("liveData.loading")}</span>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[#1a1a1a]">
           {[1,2,3,4].map((i) => (
@@ -62,8 +64,8 @@ export default function LiveDataPanel() {
       <div className="max-w-[1440px] mx-auto px-4 py-8">
         <div className="flex items-center gap-2 mb-4">
           <BarChart3 size={14} className="text-[#00FFFF]" />
-          <h2 className="text-sm font-bold tracking-tight text-[#e0e0e0]">COTACOES AO VIVO</h2>
-          <span className="text-[8px] font-mono text-[#444] ml-auto">{items.length} ATIVOS &middot; Q2 2026E</span>
+          <h2 className="text-sm font-bold tracking-tight text-[#e0e0e0]">{t("liveData.title")}</h2>
+          <span className="text-[8px] font-mono text-[#444] ml-auto">{items.length} {t("liveData.assets")} &middot; {t("liveData.period")}</span>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-[#1a1a1a]">
           {items.map((item, i) => (
@@ -73,13 +75,13 @@ export default function LiveDataPanel() {
                 {item.change_7d_pct !== null && (
                   <span className={`text-[8px] font-mono flex items-center gap-0.5 ${item.change_7d_pct >= 0 ? 'text-[#4ade80]' : 'text-[#FF4444]'}`}>
                     {item.change_7d_pct >= 0 ? <TrendingUp size={8} /> : <TrendingDown size={8} />}
-                    {item.change_7d_pct >= 0 ? '+' : ''}{item.change_7d_pct}% 7d
+                    {item.change_7d_pct >= 0 ? '+' : ''}{item.change_7d_pct}% {t("liveData.change7d")}
                   </span>
                 )}
               </div>
               <div className="mb-2">
                 <span className="text-lg font-mono font-bold text-[#e0e0e0]">
-                  {item.currency === 'USD' ? '$' : item.currency === 'BRL' ? 'R$' : item.currency === 'CNY' ? '¥' : item.currency === 'CNY T' ? '¥' : ''}
+                  {item.currency === 'USD' ? '$' : item.currency === 'BRL' ? 'R$' : item.currency === 'CNY' ? '\u00A5' : item.currency === 'CNY T' ? '\u00A5' : ''}
                   {item.price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </span>
                 <span className="text-[8px] font-mono text-[#444] ml-1">{item.unit}</span>

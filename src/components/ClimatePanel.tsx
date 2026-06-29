@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { CloudLightning, Thermometer, Droplets, Wind } from "lucide-react";
+import { useI18n } from "@/i18n/I18nContext";
 
 interface ClimateItem {
   region: string;
@@ -15,13 +16,14 @@ interface ClimateItem {
 }
 
 const severityConfig = {
-  low: { color: "#4ade80", label: "BAIXO" },
-  medium: { color: "#fbbf24", label: "MEDIO" },
-  high: { color: "#fb923c", label: "ALTO" },
-  critical: { color: "#FF4444", label: "CRITICO" },
+  low: { color: "#4ade80", labelKey: "climate.severityLow" as const },
+  medium: { color: "#fbbf24", labelKey: "climate.severityMedium" as const },
+  high: { color: "#fb923c", labelKey: "climate.severityHigh" as const },
+  critical: { color: "#FF4444", labelKey: "climate.severityCritical" as const },
 };
 
 export default function ClimatePanel() {
+  const { t } = useI18n();
   const [items, setItems] = useState<ClimateItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -30,7 +32,7 @@ export default function ClimatePanel() {
     fetch("https://hubstry-em-dashboard.vercel.app/api/climate")
       .then((r) => r.json())
       .then((data) => { setItems(data.items || []); setLoading(false); })
-      .catch(() => { setError("Falha ao carregar dados climaticos"); setLoading(false); });
+      .catch(() => { setError(t("climate.error")); setLoading(false); });
   }, []);
 
   if (loading) return (
@@ -38,8 +40,8 @@ export default function ClimatePanel() {
       <div className="max-w-[1440px] mx-auto px-4 py-8">
         <div className="flex items-center gap-2 mb-4">
           <CloudLightning size={14} className="text-[#00FFFF]" />
-          <h2 className="text-sm font-bold tracking-tight text-[#e0e0e0]">RISCO CLIMATICO</h2>
-          <span className="text-[8px] font-mono text-[#444] ml-auto">Carregando...</span>
+          <h2 className="text-sm font-bold tracking-tight text-[#e0e0e0]">{t("climate.title")}</h2>
+          <span className="text-[8px] font-mono text-[#444] ml-auto">{t("climate.loading")}</span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1a1a1a]">
           {[1,2].map((i) => (
@@ -69,8 +71,8 @@ export default function ClimatePanel() {
       <div className="max-w-[1440px] mx-auto px-4 py-8">
         <div className="flex items-center gap-2 mb-4">
           <CloudLightning size={14} className="text-[#00FFFF]" />
-          <h2 className="text-sm font-bold tracking-tight text-[#e0e0e0]">RISCO CLIMATICO</h2>
-          <span className="text-[8px] font-mono text-[#444] ml-auto">{items.length} PAISES &middot; IPCC AR6 &middot; 2026</span>
+          <h2 className="text-sm font-bold tracking-tight text-[#e0e0e0]">{t("climate.title")}</h2>
+          <span className="text-[8px] font-mono text-[#444] ml-auto">{items.length} {t("climate.countries")} &middot; {t("climate.source")}</span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1a1a1a]">
           {items.map((item, i) => {
@@ -84,7 +86,7 @@ export default function ClimatePanel() {
                   </div>
                   <span className="text-[8px] font-mono uppercase tracking-widest px-1.5 py-0.5 border"
                     style={{ color: sev.color, borderColor: `${sev.color}44`, backgroundColor: `${sev.color}11` }}>
-                    {sev.label}
+                    {t(sev.labelKey)}
                   </span>
                 </div>
                 <p className="text-[10px] text-[#555] leading-relaxed mb-3">{item.description}</p>
@@ -93,21 +95,21 @@ export default function ClimatePanel() {
                     <Thermometer size={10} className="text-[#FF8C00]" />
                     <div>
                       <span className="text-[9px] font-mono text-[#e0e0e0]">+{item.temperature_anomaly_c}C</span>
-                      <span className="block text-[7px] font-mono text-[#444]">ANOMALIA</span>
+                      <span className="block text-[7px] font-mono text-[#444]">{t("climate.anomaly")}</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <Droplets size={10} className="text-[#00FFFF]" />
                     <div>
                       <span className="text-[9px] font-mono text-[#e0e0e0]">{item.renewable_share_pct}%</span>
-                      <span className="block text-[7px] font-mono text-[#444]">RENOVAVEIS</span>
+                      <span className="block text-[7px] font-mono text-[#444]">{t("climate.renewables")}</span>
                     </div>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <Wind size={10} className="text-[#666]" />
                     <div>
                       <span className="text-[9px] font-mono text-[#e0e0e0]">{item.carbon_intensity_tco2}</span>
-                      <span className="block text-[7px] font-mono text-[#444]">tCO2/USD</span>
+                      <span className="block text-[7px] font-mono text-[#444]">{t("climate.carbon")}</span>
                     </div>
                   </div>
                 </div>

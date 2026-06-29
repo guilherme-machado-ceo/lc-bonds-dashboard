@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Newspaper, ExternalLink } from "lucide-react";
+import { useI18n } from "@/i18n/I18nContext";
 
 interface NewsItem {
   title: string;
@@ -11,6 +12,7 @@ interface NewsItem {
 }
 
 export default function NewsPanel() {
+  const { t, locale } = useI18n();
   const [items, setItems] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -19,7 +21,7 @@ export default function NewsPanel() {
     fetch("https://hubstry-em-dashboard.vercel.app/api/news")
       .then((r) => r.json())
       .then((data) => { setItems(data.items || []); setLoading(false); })
-      .catch(() => { setError("Falha ao carregar noticias"); setLoading(false); });
+      .catch(() => { setError(t("news.error")); setLoading(false); });
   }, []);
 
   if (loading) return (
@@ -27,8 +29,8 @@ export default function NewsPanel() {
       <div className="max-w-[1440px] mx-auto px-4 py-8">
         <div className="flex items-center gap-2 mb-4">
           <Newspaper size={14} className="text-[#00FFFF]" />
-          <h2 className="text-sm font-bold tracking-tight text-[#e0e0e0]">NOTICIAS FINANCEIRAS</h2>
-          <span className="text-[8px] font-mono text-[#444] ml-auto">Carregando...</span>
+          <h2 className="text-sm font-bold tracking-tight text-[#e0e0e0]">{t("news.title")}</h2>
+          <span className="text-[8px] font-mono text-[#444] ml-auto">{t("news.loading")}</span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[#1a1a1a]">
           {[1,2,3].map((i) => (
@@ -48,7 +50,7 @@ export default function NewsPanel() {
       <div className="max-w-[1440px] mx-auto px-4 py-8">
         <div className="flex items-center gap-2 mb-4">
           <Newspaper size={14} className="text-[#FF4444]" />
-          <h2 className="text-sm font-bold tracking-tight text-[#e0e0e0]">NOTICIAS FINANCEIRAS</h2>
+          <h2 className="text-sm font-bold tracking-tight text-[#e0e0e0]">{t("news.title")}</h2>
         </div>
         <div className="bg-[#0a0a0a] p-4 border border-[#1a1a1a]">
           <span className="text-[11px] font-mono text-[#FF4444]">{error}</span>
@@ -62,8 +64,8 @@ export default function NewsPanel() {
       <div className="max-w-[1440px] mx-auto px-4 py-8">
         <div className="flex items-center gap-2 mb-4">
           <Newspaper size={14} className="text-[#00FFFF]" />
-          <h2 className="text-sm font-bold tracking-tight text-[#e0e0e0]">NOTICIAS FINANCEIRAS</h2>
-          <span className="text-[8px] font-mono text-[#444] ml-auto">{items.length} ITENS &middot; GOOGLE NEWS RSS</span>
+          <h2 className="text-sm font-bold tracking-tight text-[#e0e0e0]">{t("news.title")}</h2>
+          <span className="text-[8px] font-mono text-[#444] ml-auto">{items.length} {t("news.itemsCount")} &middot; {t("news.source")}</span>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#1a1a1a]">
           {items.slice(0, 9).map((item, i) => (
@@ -83,7 +85,7 @@ export default function NewsPanel() {
               )}
               <div className="flex items-center gap-2 mt-auto">
                 <span className="text-[8px] font-mono text-[#444]">
-                  {new Date(item.published).toLocaleDateString("pt-BR")}
+                  {new Date(item.published).toLocaleDateString(locale === "pt" ? "pt-BR" : "en-US")}
                 </span>
                 <span className="text-[8px] font-mono text-[#333]">&middot;</span>
                 <span className="text-[8px] font-mono text-[#444] uppercase">{item.source}</span>
