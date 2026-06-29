@@ -1,6 +1,6 @@
 import { X, ExternalLink } from "lucide-react";
 import { sourceRefs } from "@/data/lcBondsData";
-import { t } from "@/i18n";
+import { useI18n } from "@/i18n/I18nContext";
 
 interface SourceOverlayProps {
   sourceId: string | null;
@@ -8,6 +8,7 @@ interface SourceOverlayProps {
 }
 
 export default function SourceOverlay({ sourceId, onClose }: SourceOverlayProps) {
+  const { t } = useI18n();
   if (!sourceId) return null;
   const source = sourceRefs.find((s) => s.id === sourceId);
   if (!source) return null;

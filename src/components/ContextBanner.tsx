@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { contextBanner } from "@/data/goldOilData";
-import { t, getLocale } from "@/i18n";
+import { useI18n } from "@/i18n/I18nContext";
 import { AlertTriangle, ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
 
 export default function ContextBanner() {
+  const { t, locale } = useI18n();
   const [expanded, setExpanded] = useState(false);
-  const locale = getLocale();
   const data = contextBanner;
 
   return (

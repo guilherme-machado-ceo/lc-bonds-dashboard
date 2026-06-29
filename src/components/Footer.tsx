@@ -1,5 +1,5 @@
 import { sourceRefs } from "@/data/lcBondsData";
-import { t } from "@/i18n";
+import { useI18n } from "@/i18n/I18nContext";
 import { ExternalLink } from "lucide-react";
 
 interface Props {
@@ -7,6 +7,7 @@ interface Props {
 }
 
 export default function Footer({ onSourceClick }: Props) {
+  const { t } = useI18n();
   return (
     <footer className="bg-[#050505] border-t border-[#1a1a1a]">
       <div className="max-w-[1440px] mx-auto px-4 py-8">

@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from "recharts";
 import { countryDebtData, latestYearIndex } from "@/data/lcBondsData";
-import { t, getLocale } from "@/i18n";
+import { useI18n } from "@/i18n/I18nContext";
 import ExportButton from "./ExportButton";
 import EstBadge from "./EstBadge";
 import { Share2 } from "lucide-react";
@@ -9,8 +9,8 @@ import { Share2 } from "lucide-react";
 interface Props { onSourceClick: (id: string) => void; onEmbedClick: (id: string) => void; regionFilter: "all" | "BRICS" | "LATAM"; }
 
 export default function DebtComposition({ onSourceClick, onEmbedClick, regionFilter }: Props) {
+  const { t, locale } = useI18n();
   const chartRef = useRef<HTMLDivElement>(null);
-  const locale = getLocale();
   const filtered = countryDebtData.filter((c) => regionFilter === "all" || c.region === regionFilter);
   const chartData = filtered.map((c) => ({ country: locale === "pt" ? c.countryPt : c.country, countryEn: c.country, localCurrency: c.localCurrencyDebt[latestYearIndex], foreignCurrency: c.foreignCurrencyDebt[latestYearIndex], total: c.totalDebt[latestYearIndex], debtToGDP: c.debtToGDP, debtToGDPLabel: c.debtToGDPLabel, debtToGDPSource: c.debtToGDPSource, debtToGDPSnapshot: c.debtToGDPSnapshot }));
   const jsonData = { composition: chartData };

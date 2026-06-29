@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { inflectionPoints, countryDebtData, kpis, latestYearIndex } from "@/data/lcBondsData";
-import { t, getLocale } from "@/i18n";
+import { useI18n } from "@/i18n/I18nContext";
 import ExportButton from "./ExportButton";
 import EstBadge from "./EstBadge";
 import { ArrowRight, ChevronRight, Share2 } from "lucide-react";
@@ -59,8 +59,8 @@ function FXInfraSVG() {
 }
 
 export default function BrazilSpotlight({ onSourceClick, onEmbedClick }: Props) {
+  const { t, locale } = useI18n();
   const chartRef = useRef<HTMLDivElement>(null);
-  const locale = getLocale();
   const brazil = countryDebtData.find((c) => c.country === "Brazil")!;
   const ndbProgress = (kpis.ndbLCShare / kpis.ndbLCTarget) * 100;
   const jsonData = { brazil: { lcDebt: brazil.localCurrencyDebt[latestYearIndex], fcDebt: brazil.foreignCurrencyDebt[latestYearIndex], debtToGDP: kpis.dividaBrutaBR } };
