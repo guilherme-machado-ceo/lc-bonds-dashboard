@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { spreadsData } from "@/data/lcBondsData";
-import { t, getLocale } from "@/i18n";
+import { useI18n } from "@/i18n/I18nContext";
 import ExportButton from "./ExportButton";
 import EstBadge from "./EstBadge";
 import { Share2, TrendingDown, Minus, TrendingUp } from "lucide-react";
@@ -8,8 +8,8 @@ import { Share2, TrendingDown, Minus, TrendingUp } from "lucide-react";
 interface Props { onSourceClick: (id: string) => void; onEmbedClick: (id: string) => void; regionFilter: "all" | "BRICS" | "LATAM"; }
 
 export default function SpreadsTable({ onSourceClick, onEmbedClick, regionFilter }: Props) {
+  const { t, locale } = useI18n();
   const chartRef = useRef<HTMLDivElement>(null);
-  const locale = getLocale();
   const filtered = spreadsData.filter((s) => {
     if (regionFilter === "all") return true;
     const brics = ["BR", "CN", "IN", "RU", "ZA"]; const latam = ["BR", "MX", "AR", "CO", "CL"];

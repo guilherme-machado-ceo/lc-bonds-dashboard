@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { Download, FileImage, FileText, FileJson } from "lucide-react";
-import { t } from "@/i18n";
+import { useI18n } from "@/i18n/I18nContext";
 
 interface ExportButtonProps {
   chartRef: React.RefObject<HTMLDivElement | null>;
@@ -11,6 +11,7 @@ interface ExportButtonProps {
 }
 
 export default function ExportButton({ chartRef, filename, jsonData }: ExportButtonProps) {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 

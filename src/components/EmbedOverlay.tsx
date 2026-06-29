@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { X, Copy, Check } from "lucide-react";
-import { t } from "@/i18n";
+import { useI18n } from "@/i18n/I18nContext";
 
 interface EmbedOverlayProps {
   sectionId: string | null;
@@ -8,6 +8,7 @@ interface EmbedOverlayProps {
 }
 
 export default function EmbedOverlay({ sectionId, onClose }: EmbedOverlayProps) {
+  const { t } = useI18n();
   const [copied, setCopied] = useState(false);
   if (!sectionId) return null;
 
