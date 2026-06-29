@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import Navbar from "@/components/Navbar";
+import ContextBanner from "@/components/ContextBanner";
 import HeroSection from "@/components/HeroSection";
 import BrazilSpotlight from "@/components/BrazilSpotlight";
 import MarketSizeChart from "@/components/MarketSizeChart";
@@ -8,9 +9,12 @@ import VolatilityChart from "@/components/VolatilityChart";
 import TCXChart from "@/components/TCXChart";
 import DebtComposition from "@/components/DebtComposition";
 import StabilityScatter from "@/components/StabilityScatter";
+import GoldReservesChart from "@/components/GoldReservesChart";
+import OilVectorChart from "@/components/OilVectorChart";
 import Footer from "@/components/Footer";
 import SourceOverlay from "@/components/SourceOverlay";
 import EmbedOverlay from "@/components/EmbedOverlay";
+// i18n imported in child components
 
 function useScrollReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -59,16 +63,47 @@ export default function App() {
         ::-webkit-scrollbar-thumb:hover { background: #333; }
         ::selection { background-color: rgba(0, 255, 255, 0.2); color: #e0e0e0; }
       `}</style>
+
+      {/* ── 1. NAVBAR ── */}
       <Navbar />
+
+      {/* ── 2. CONTEXT BANNER: Geopolitical Economy ── */}
+      <RevealSection><ContextBanner /></RevealSection>
+
+      {/* ── 3. HERO: KPIs + Region Filter + Inflection Points ── */}
       <RevealSection><HeroSection regionFilter={regionFilter} onRegionChange={setRegionFilter} /></RevealSection>
+
+      {/* ── 4. BRAZIL SPOTLIGHT: Panda Bond + NDB Progress + Flowchart ── */}
       <RevealSection><BrazilSpotlight onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} /></RevealSection>
+
+      {/* ── 5. MARKET SIZE: BRICS + LATAM LC Bonds ── */}
       <RevealSection><MarketSizeChart onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} /></RevealSection>
+
+      {/* ── 6. SPREADS × VOLATILITY: Rate spreads vs FX vol ── */}
       <RevealSection><SpreadsTable onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} regionFilter={regionFilter} /></RevealSection>
+
+      {/* ── 7. VOLATILITY RANKING: G20 currencies ── */}
       <RevealSection><VolatilityChart onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} regionFilter={regionFilter} /></RevealSection>
+
+      {/* ── 8. TCX HEDGING: Local currency protection ── */}
       <RevealSection><TCXChart onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} /></RevealSection>
+
+      {/* ── 9. DEBT COMPOSITION: LC vs FX ── */}
       <RevealSection><DebtComposition onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} regionFilter={regionFilter} /></RevealSection>
+
+      {/* ── 10. STABILITY SCATTER: Economic stability vs LC share ── */}
       <RevealSection><StabilityScatter onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} regionFilter={regionFilter} /></RevealSection>
+
+      {/* ── 11. GOLD RESERVES: Anti-dollar anchor ── */}
+      <RevealSection><GoldReservesChart onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} /></RevealSection>
+
+      {/* ── 12. OIL VECTOR: Price + Production + Petroyuan ── */}
+      <RevealSection><OilVectorChart onSourceClick={handleSourceClick} onEmbedClick={handleEmbedClick} /></RevealSection>
+
+      {/* ── 13. FOOTER ── */}
       <Footer onSourceClick={handleSourceClick} />
+
+      {/* ── OVERLAYS ── */}
       <SourceOverlay sourceId={activeSource} onClose={handleCloseSource} />
       <EmbedOverlay sectionId={activeEmbed} onClose={handleCloseEmbed} />
     </div>
