@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 import { kpis, inflectionPoints } from "@/data/lcBondsData";
-import { t, getLocale, subscribe } from "@/i18n";
+import { useI18n } from "@/i18n/I18nContext";
 import { TrendingUp, Activity, Globe, Shield, Layers, Radio } from "lucide-react";
 import EstBadge from "./EstBadge";
 
 interface Props { regionFilter: "all" | "BRICS" | "LATAM"; onRegionChange: (r: "all" | "BRICS" | "LATAM") => void; }
 
 export default function HeroSection({ regionFilter, onRegionChange }: Props) {
-  const [, forceUpdate] = useState(0);
-  const locale = getLocale();
-  useEffect(() => { const unsub = subscribe(() => forceUpdate((v) => v + 1)); return () => { unsub(); }; }, []);
+  const { t, locale } = useI18n();
 
   return (
     <section className="border-b border-[#1a1a1a] bg-[#050505] relative overflow-hidden">
