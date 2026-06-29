@@ -38,7 +38,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     const unsubscribe = subscribe(() => {
       setLocaleState(getLocale());
     });
-    return unsubscribe;
+    return () => { unsubscribe(); };
   }, []);
 
   const setLocale = useCallback((l: Locale) => {

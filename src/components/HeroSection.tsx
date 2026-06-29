@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { kpis, inflectionPoints } from "@/data/lcBondsData";
 import { useI18n } from "@/i18n/I18nContext";
 import { TrendingUp, Activity, Globe, Shield, Layers, Radio } from "lucide-react";

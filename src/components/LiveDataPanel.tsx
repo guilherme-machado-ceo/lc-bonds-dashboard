@@ -16,7 +16,7 @@ interface MarketItem {
 }
 
 export default function LiveDataPanel() {
-  const { t, locale } = useI18n();
+  const { t } = useI18n();
   const [items, setItems] = useState<MarketItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
